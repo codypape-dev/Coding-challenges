@@ -69,6 +69,7 @@ class Solution:
 
         return ans
 
+
     def longestOnes(self, nums: List[int], k: int) -> int:
         left = ans = current = 0
 

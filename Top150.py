@@ -1,4 +1,4 @@
-from collections import deque
+from collections import deque, defaultdict
 from typing import List
 
 
@@ -26,10 +26,41 @@ class Solution:
 
         return len(nums) - count
 
+    def removeDuplicates(self, nums: List[int]) -> int:
+        count = 0
+        for i in range(len(nums) - 1):
+            if nums[i] == nums[i + 1]:
+                count += 1
+                nums[i] = 200
+        nums.sort()
+        return len(nums) - count
 
+    def removeDuplicates2(self, nums: List[int]) -> int:
+        j = 1
+        for i in range(1, len(nums)):
+            if nums[i] != nums[i - 1]:
+                nums[j] = nums[i]
+                j += 1
+        print(nums)
+        return j
 
+    def remove2Duplicates(self, nums: List[int]) -> int:
+        if not nums or len(nums) < 2:
+            return len(nums)
+        count = 0
+        left = 0
+        current = 1
 
+        for right in range(2, len(nums)):
+            if nums[left] == nums[right] == nums[current]:
+                count += 1
+                nums[left] = 1000000
+            left += 1
+            current += 1
+        nums.sort()
+        print(nums)
+        return len(nums) - count
 
-print(Solution().removeDuplicates([2,2,3]))
+print(Solution().remove2Duplicates([0,0,1,1,1,1,2,3,3]))
 
 #print(Solution().merge([1, 2, 3, 0, 0, 0], 3, [2, 5, 6], 3))
