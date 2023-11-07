@@ -1,3 +1,4 @@
+from collections import defaultdict
 from typing import List
 
 
@@ -139,5 +140,52 @@ class Solution:
         backtracking([], 0, 0)
         return answer
 
+    def numsSameConsecDiff(self, n: int, k: int) -> List[int]:
+        ans = set()
 
-print(Solution().generateParenthesis(2))
+        def dfs(curr):
+            if len(curr) == n and int(curr) not in ans:
+                ans.add(int(curr))
+                return
+
+            add_k = int(curr[-1]) + k
+            subs_k = int(curr[-1]) - k
+
+            if 0 <= add_k < 10:
+                dfs(curr + str(add_k))
+            if 0 <= subs_k < 10:
+                dfs(curr + str(subs_k))
+
+        for i in range(1, 10):
+            dfs(str(i))
+
+        return list(ans)
+
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        m = len(board)
+        n = len(board[0])
+        directions = {(0, 1), (1, 0), (-1, 0), (0, -1)}
+        ans = False
+        def valid_cell(x, y):
+            return 0 <= x < m and 0 <= y < n
+
+        def explore_edges(x, y, k, seen: set):
+            print(x,y,k)
+            if k == len(word):
+                return True
+            if word[k] == board[x][y]:
+
+                seen.add((x, y))
+                for i, j in directions:
+                    new_x = x + i
+                    new_y = y + j
+
+                    if valid_cell(new_x, new_y) and (new_x, new_y) not in seen:
+                        return explore_edges(new_x, new_y, k + 1, seen)
+
+        print (explore_edges(1,3,0,set()))
+
+        return ans
+
+
+print(Solution().exist([["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], "SEE"))

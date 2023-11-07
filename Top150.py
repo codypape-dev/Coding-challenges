@@ -1,4 +1,5 @@
 from collections import deque, defaultdict
+from math import floor, ceil
 from typing import List
 
 
@@ -61,6 +62,31 @@ class Solution:
         print(nums)
         return len(nums) - count
 
-print(Solution().remove2Duplicates([0,0,1,1,1,1,2,3,3]))
+    def majorityElement(self, nums: List[int]) -> int:
+        major = nums[0]
+        count = 0
 
-#print(Solution().merge([1, 2, 3, 0, 0, 0], 3, [2, 5, 6], 3))
+        for i in range(len(nums)):
+            if count == 0:
+                major = nums[i]
+
+            if nums[i] != major:
+                count -= 1
+            else:
+                count += 1
+
+        return major
+
+    def rotate(self, nums: List[int], k: int) -> None:
+        right = k % len(nums)
+        copy = nums[:]
+        for left in range(len(nums)):
+            if right >= len(nums):
+                right = 0
+            nums[right] = copy[left]
+            right += 1
+        print(nums)
+
+print(Solution().maxProfit([7,1,5,3,6,4]))
+
+# print(Solution().merge([1, 2, 3, 0, 0, 0], 3, [2, 5, 6], 3))

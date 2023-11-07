@@ -199,6 +199,42 @@ class SolutionDFS:
 
         return count_components
 
+    def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
+        m = len(grid)
+        n = len(grid[0])
+        directions = [[-1, 0], [0, 1], [1, 0], [0, -1]]
+        seen = set()
+        max_area = 0
+
+        def valid(x, y):
+            return 0 <= x < m and 0 <= y < n
+
+        def explore_island(x, y):
+            nonlocal max_area
+            area = 0
+            stack = [(x, y)]
+            while stack:
+                area += 1
+                x, y = stack.pop()
+
+                for dx, dy in directions:
+                    dx = x + dx
+                    dy = y + dy
+                    if valid(dx, dy) and (dx, dy) not in seen:
+                        seen.add((dx, dy))
+                        if grid[dx][dy] == 1:
+                            stack.append((dx, dy))
+            max_area = max(max_area, area)
+
+        for i in range(m):
+            for j in range(n):
+                if valid(i, j) and (i, j) not in seen:
+                    seen.add((i, j))
+                    if grid[i][j] == 1:
+                        explore_island(i, j)
+
+        return max_area
+
 
 class SolutionBFS:
 
@@ -334,7 +370,6 @@ class SolutionBFS:
 
         # find the nearest exit
 
-
         # Directions up (r-1, 0), down (r+1, 0), left (0, c-1), right (0, c+1)
         directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
         m = len(maze)
@@ -395,12 +430,15 @@ class SolutionBFS:
         return -1
 
 
-grid = [
-    ["0", "0", "0", "0", "0"],
-    ["1", "1", "0", "0", "0"],
-    ["0", "0", "0", "1", "1"],
-    ["0", "0", "0", "0", "0"]
-]
+
+grid = [[0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
+        [0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0],
+        [0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0]]
 root = TreeNode(3)
 one = TreeNode(5)
 two = TreeNode(1)
@@ -420,5 +458,5 @@ two.right = six
 four.left = seven
 four.right = eight
 
-print(SolutionBFS().nearestExit([["+","+","+"],[".",".","."],["+","+","+"]], [1, 0]))
-# print(SolutionDFS().countComponents(5, [[0, 1], [1, 2], [3, 4]]))
+#print(SolutionBFS().nearestExit([["+", "+", "+"], [".", ".", "."], ["+", "+", "+"]], [1, 0]))
+print(SolutionDFS().maxAreaOfIsland(grid))
